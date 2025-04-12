@@ -25,3 +25,10 @@ Install from PyPI:
 
 ```bash
 pip install cnheat
+
+🔧 Basic Usage
+from cnheat import cnHeat
+
+cn = cnHeat(client_id="your_id", client_secret="your_secret")
+sites = cn.get_sites()
+print(sites)
