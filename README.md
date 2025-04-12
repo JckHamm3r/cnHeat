@@ -25,6 +25,7 @@ Install from PyPI:
 
 ```bash
 pip install cnheat
+```
 
 🔧 Basic Usage
 from cnheat import cnHeat
