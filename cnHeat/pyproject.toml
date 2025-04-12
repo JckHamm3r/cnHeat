@@ -1,0 +1,21 @@
+[project]
+name = "cnheat"
+version = "0.1.0"
+description = "Python module for interacting with the Cambium Networks cnHeat API"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    { name = "JckHmr", email = "cjosey@cjevolutions.com" }
+]
+requires-python = ">=3.7"
+dependencies = [
+    "requests"
+]
+
+[project.urls]
+Homepage = "https://github.com/JckHamm3r/cnHeat"
+Issues = "https://github.com/JckHamm3r/cnHeat/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
