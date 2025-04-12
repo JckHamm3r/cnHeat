@@ -85,7 +85,7 @@ class cnHeat:
             except requests.RequestException as e:
                 raise RuntimeError(f"Failed to fetch antennas: {e}")
 
-        def to_dict(self, freq):
+        def to_dict(self, freq, key=None):
             """
             Returns a dictionary of antennas keyed by antenna ID.
 
@@ -96,7 +96,10 @@ class cnHeat:
                 dict: A dictionary mapping antenna ID to antenna data.
             """
             antennas = self(freq)
-            return {a['id']: a for a in antennas if 'id' in a}
+            if key == None:
+                return {a['id']: a for a in antennas if 'id' in a}
+            else:
+                return {a[key]: a for a in antennas if key in a}
 
 ####### RADIOS ########
 
@@ -133,7 +136,7 @@ class cnHeat:
                         site_name = s['name']
                 raise RuntimeError(f"Failed to fetch {site_name} radios: {e}")
 
-        def to_dict(self, site_id):
+        def to_dict(self, site_id, key=None):
             """
             Returns radios for a site as a dictionary keyed by radio ID.
 
@@ -144,7 +147,10 @@ class cnHeat:
                 dict: Dictionary of radios by ID.
             """
             radios = self(site_id)
-            return {r['id']: r for r in radios if 'id' in r}
+            if key == None:
+                return {r['id']: r for r in radios if 'id' in r}
+            else:
+                return {r[key]: r for r in radios if key in r}
 
     def get_radio(self, radio_id):
         """
@@ -313,7 +319,7 @@ class cnHeat:
             except requests.RequestException as e:
                 raise RuntimeError(f"Failed to fetch sites: {e}")
 
-        def to_dict(self):
+        def to_dict(self, key):
             """
             Returns sites as a dictionary keyed by site ID.
 
@@ -321,7 +327,10 @@ class cnHeat:
                 dict: Dictionary of sites by ID.
             """
             sites = self()
-            return {s['id']: s for s in sites if 'id' in s}
+            if key == None:
+                return {s['id']: s for s in sites if 'id' in s}
+            else:
+                return {s[key]: s for s in sites if key in s}
 
     def rename_site(self, site_id, name):
         """
@@ -402,7 +411,7 @@ class cnHeat:
             except requests.RequestException as e:
                 raise RuntimeError(f"Failed to fetch predictions: {e}")
 
-        def to_dict(self):
+        def to_dict(self, key=None):
             """
             Returns predictions as a dictionary keyed by prediction ID.
 
@@ -410,7 +419,10 @@ class cnHeat:
                 dict: Dictionary of predictions by ID.
             """
             predictions = self()
-            return {p['id']: p for p in predictions if 'id' in p}
+            if key == None:
+                return {p['id']: p for p in predictions if 'id' in p}
+            else:
+                return {p[key]: p for p in predictions if key in p}
         
     def create_prediction(self, prediction_name, radio_id_list):
         """
@@ -527,7 +539,7 @@ class cnHeat:
             except requests.RequestException as e:
                 raise RuntimeError(f"Failed to get users: {e}")
 
-        def to_dict(self):
+        def to_dict(self, key=None):
             """
             Returns users as a dictionary keyed by user ID.
 
@@ -535,7 +547,10 @@ class cnHeat:
                 dict: Dictionary of users by ID.
             """
             users = self()
-            return {u['id']: u for u in users if 'id' in u}
+            if key == None:
+                return {u['email']: u for u in users if 'email' in u}
+            else:
+                return {u[key]: u for u in users if key in u}
         
     def add_user(self, email, role):
         """
@@ -613,7 +628,7 @@ class cnHeat:
             except requests.RequestException as e:
                 raise RuntimeError(f"Failed to get subscriptions: {e}")
 
-        def to_dict(self):
+        def to_dict(self, key=None):
             """
             Returns subscriptions as a dictionary keyed by subscription ID.
 
@@ -621,7 +636,10 @@ class cnHeat:
                 dict: Dictionary of subscriptions by ID.
             """
             subscriptions = self()
-            return {s['id']: s for s in subscriptions if 'id' in s}
+            if key == None:
+                return {s['id']: s for s in subscriptions if 'id' in s}
+            else:
+                return {s[key]: s for s in subscriptions if key in s}
         
     def renew_subscriptions(self, site_id):
         """
