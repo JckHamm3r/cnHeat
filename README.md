@@ -27,9 +27,37 @@ Install from PyPI:
 pip install cnheat
 ```
 
+
 🔧 Basic Usage
+```bash
 from cnheat import cnHeat
 
 cn = cnHeat(client_id="your_id", client_secret="your_secret")
 sites = cn.get_sites()
 print(sites)
+```
+
+📊 Example: Create a Radio
+```bash
+site_id = cn.get_sites()[0]['id']
+antenna_id = cn.get_antennas(3.6)[0]['id']
+cn.create_radio(site_id, 3.6, antenna_id, azimuth=90)
+```
+
+📊 Example: Create a Prediction
+```bash
+radios = cn.get_site_radios(site_id)
+radio_ids = [r['id'] for r in radios]
+cn.create_prediction("Coverage Map", radio_ids)
+```
+
+---
+
+## 🧼 Summary
+
+- **Yes**, put usage and examples directly into `README.md`
+- Use `## 🔧 Basic Usage` and `## 📊 Examples` headers to organize
+- PyPI will automatically render those sections
+- Just make sure `pyproject.toml` includes this line:
+  ```toml
+  readme = "README.md"
