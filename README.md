@@ -53,11 +53,4 @@ cn.create_prediction("Coverage Map", radio_ids)
 
 ---
 
-## 🧼 Summary
 
-- **Yes**, put usage and examples directly into `README.md`
-- Use `## 🔧 Basic Usage` and `## 📊 Examples` headers to organize
-- PyPI will automatically render those sections
-- Just make sure `pyproject.toml` includes this line:
-  ```toml
-  readme = "README.md"
