@@ -1,7 +1,7 @@
 import requests
 
 class cnHeat:
-    def __init__(self, client_id, client_secret):
+    def __init__(self, client_id, client_secret, base_endpoint="https://internal.cnheat.cambiumnetworks.com/api/v1/"):
         self.get_antennas = self.AntennaFetcher(self)
         self.get_site_radios = self.SiteRadiosFetcher(self)
         self.get_sites = self.SitesFetcher(self)
@@ -10,7 +10,7 @@ class cnHeat:
         self.get_subscriptions = self.SubscriptionsFetcher(self)
         self.client_id = client_id
         self.client_secret = client_secret
-        self.base_endpoint = "https://internal.cnheat.cambiumnetworks.com/api/v1/"
+        self.base_endpoint = base_endpoint
         self.token = self._authenticate()
         self.headers = {"Authorization": f"Bearer {self.token}"}
         self.sites = self.get_sites()
