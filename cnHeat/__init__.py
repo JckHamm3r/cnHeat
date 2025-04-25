@@ -423,6 +423,37 @@ class cnHeat:
                 return {p['id']: p for p in predictions if 'id' in p}
             else:
                 return {p[key]: p for p in predictions if key in p}
+
+    def create_eval_prediction(self, prediction_name, radio_id_list, install_height, install_reference):
+        """
+        Creates a prediction using a list of radio IDs.
+
+        Args:
+            prediction_name (str): Name of the prediction.
+            radio_id_list (list): List of radio IDs to include.
+            install_height: CPE height above reference.
+            install_reference: Ground or Roof
+
+        Returns:
+            dict: The API response with the new prediction details.
+
+        Raises:
+            RuntimeError: If creating prediction fails.
+        """
+        data = {
+            "name":prediction_name,
+            "radio_list":radio_id_list,
+            "install_height":install_height,
+            "install_reference":install_reference
+        }
+        try:
+            response = requests.post(f"{self.base_endpoint}predictions", headers=self.headers, json=data)
+            response.raise_for_status()
+            self.predictions = self.get_predictions()
+            return response.json() 
+        except requests.RequestException as e:
+            raise RuntimeError(f"Failed to create predicition: {e}")
+    
         
     def create_prediction(self, prediction_name, radio_id_list):
         """
