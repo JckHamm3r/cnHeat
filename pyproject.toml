@@ -1,6 +1,6 @@
 [project]
 name = "cnheat"
-version = "0.1.4"
+version = "0.1.5"
 description = "Python module for interacting with the Cambium Networks cnHeat API"
 readme = "README.md"
 license = {text = "MIT"}
