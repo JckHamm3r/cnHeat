@@ -11,13 +11,13 @@ jobs:
 
     permissions:
       contents: read
-      id-token: write  # Enables trusted publishing to PyPI
+      id-token: write  # Required for trusted publishing to PyPI
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required for setuptools-scm to detect tags
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,5 +34,3 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: dist/
