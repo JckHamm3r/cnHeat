@@ -244,49 +244,40 @@ class cnHeat:
         except requests.RequestException as e:
             raise RuntimeError(f"Failed to create radio: {e}") 
 
-    def update_radio(self, radio_id, freq, antennaId, azimuth, aglHeightMeters=20, radioName=None, foliageTuning=-1, arHeightMeters=0, radiusMeters=12875, smGain=18.5, tilt=-2, txClearanceMeters=30, txPowerDbm=27.2):
+    def update_radio(self, radio_id, data):
         """
-        Updates an existing radio with provided configuration.
-        
+        Updates an existing radio with only the fields provided in the `data` dictionary.
+    
         Args:
-            radio_id (str): The ID of the radio to be updated.
-            freq (float): The frequency of the radio.
-            antennaId (str): The ID of the antenna to use.
-            azimuth (float): The azimuth angle for the radio.
-            aglHeightMeters (float, optional): Height above ground level in meters. Defaults to 20.
-            radioName (str, optional): Custom name for the radio. Defaults to None.
-            foliageTuning (float, optional): Foliage tuning value. Defaults to -1.
-            arHeightMeters (float, optional): Rooftop height in meters. Defaults to 0.
-            radiusMeters (float, optional): Radius in meters. Defaults to 12875.
-            smGain (float, optional): Gain in dBi. Defaults to 18.5.
-            tilt (float, optional): Tilt value. Defaults to -2.
-            txClearanceMeters (float, optional): TX clearance in meters. Defaults to 50.
-            txPowerDbm (float, optional): TX power in dBm. Defaults to 27.2.
-        
+            radio_id (str): The ID of the radio to update.
+            data (dict): Dictionary of fields to update. Only these fields will be patched.
+                Valid keys include:
+                    - "frequency(ghz)" (float): Frequency in GHz
+                    - "antenna" (str): Antenna ID
+                    - "azimuth" (float): Azimuth angle
+                    - "height(m)" (float): Height above ground level in meters
+                    - "name" (str or None): Radio name
+                    - "foliage_tuning" (float): Foliage tuning value
+                    - "height_rooftop(m)" (float): Rooftop height in meters
+                    - "radius(m)" (float): Coverage radius in meters
+                    - "sm_gain(dbi)" (float): Subscriber module gain in dBi
+                    - "tilt" (float): Antenna tilt value
+                    - "txclearance(m)" (float): TX clearance in meters
+                    - "txpower(dbm)" (float): TX power in dBm
+    
         Returns:
-            dict: The response from the API after radio update.
-        
+            dict: API response after updating the radio.
+    
         Raises:
-            RuntimeError: If radio update fails.
+            RuntimeError: If the radio update fails.
         """
         try:
-            if radioName is None:
-                radioName = "No Name"
-            data = {
-                "antenna": antennaId,
-                "name": radioName,
-                "azimuth": azimuth,
-                "foliage_tuning": foliageTuning,
-                "frequency(ghz)": freq,
-                "height(m)": aglHeightMeters,
-                "height_rooftop(m)": arHeightMeters,
-                "radius(m)": radiusMeters,
-                "sm_gain(dbi)": smGain,
-                "tilt": tilt,
-                "txclearance(m)": txClearanceMeters,
-                "txpower(dbm)": txPowerDbm
-            }
-            response = requests.patch(f"{self.base_endpoint}radio/{radio_id}", headers=self.headers, json=data)
+
+            response = requests.patch(
+                f"{self.base_endpoint}radio/{radio_id}",
+                headers=self.headers,
+                json=data
+            )
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
