@@ -1,6 +1,5 @@
 [project]
 name = "cnheat"
-version = "0.1.5"
 description = "Python module for interacting with the Cambium Networks cnHeat API"
 readme = "README.md"
 license = {text = "MIT"}
@@ -17,5 +16,9 @@ Homepage = "https://github.com/JckHamm3r/cnHeat"
 Issues = "https://github.com/JckHamm3r/cnHeat/issues"
 
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "no-local-version"
