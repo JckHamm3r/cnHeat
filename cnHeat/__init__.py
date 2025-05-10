@@ -1,4 +1,5 @@
 import requests
+import httpx
 
 class cnHeat:
     def __init__(self, client_id, client_secret, base_endpoint="https://internal.cnheat.cambiumnetworks.com/api/v1/"):
@@ -702,4 +703,64 @@ class cnHeat:
             return response.json()
         except requests.RequestException as e:
             raise RuntimeError(f"Failed to terminate subscription: {e}")
+
+    def create_site_export(self, tower_name, service_id, auth_token, project_id, providerid, technology_code, cpe_heigth_meters):
+        """
+        Creates a CNHeat export job for a given tower.
+    
+        Args:
+            tower_name (str): The name of the tower/site.
+            service_id (str): The service location (SL) ID associated with the tower.
+            auth_token (str): Bearer token for authentication, pulled from browser DevTools.
+            project_id (str): The project/export ID (UUID at the end of the export URL).
+            providerid (int): Cambium-assigned provider ID used in the export payload.
+    
+        Returns:
+            None. Prints the response from the export endpoint.
+        """
+        heatsites = self.get_sites.to_dict("name")
+        radios = self.get_site_radios(heatsites[tower_name]['id'])
+    
+        sl_mappings = [[service_id, r["id"]] for r in radios]
+    
+        payload = {
+            "name": tower_name,
+            "description": tower_name,
+            "mmwave": False,
+            "providerid": providerid,
+            "brandname": f"{tower_name}",
+            "technology": technology_code,
+            "lowlatency": True,
+            "bizrescode": "X",
+            "rxheight": cpe_heigth_meters,
+            "subscribers": "",
+            "sl_ap_mappings": sl_mappings,
+            "nlos": True
+        }
+    
+        url = f"https://internal.cnheat.cambiumnetworks.com/export/{project_id}"
+    
+        headers = {
+            'accept': '*/*',
+            'accept-language': 'en-US,en;q=0.9',
+            'authorization': f'Bearer {auth_token}',
+            'cache-control': 'no-cache',
+            'content-type': 'application/json; charset=utf-8',
+            'origin': 'https://cnheat.cambiumnetworks.com',
+            'pragma': 'no-cache',
+            'priority': 'u=1, i',
+            'referer': 'https://cnheat.cambiumnetworks.com/',
+            'sec-ch-ua': '"Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"macOS"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+            'user-agent': 'Mozilla/5.0'
+        }
+
+    with httpx.Client(http2=True) as client:
+        response = client.post(url, headers=headers, json=payload)
+        print("Status Code:", response.status_code)
+        print("Response:", response.text)
 
