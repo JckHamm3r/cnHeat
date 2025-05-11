@@ -759,8 +759,8 @@ class cnHeat:
             'user-agent': 'Mozilla/5.0'
         }
 
-    with httpx.Client(http2=True) as client:
-        response = client.post(url, headers=headers, json=payload)
-        print("Status Code:", response.status_code)
-        print("Response:", response.text)
+        with httpx.Client(http2=True) as client:
+            response = client.post(url, headers=headers, json=payload)
+            print("Status Code:", response.status_code)
+            print("Response:", response.text)
 
